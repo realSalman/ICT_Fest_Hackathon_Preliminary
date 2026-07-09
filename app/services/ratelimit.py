@@ -1,5 +1,8 @@
 """Per-user rolling-window rate limiting for booking creation."""
+<<<<<<< HEAD
 import threading
+=======
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 import time
 
 from ..errors import AppError
@@ -8,7 +11,10 @@ _WINDOW_SECONDS = 60
 _MAX_REQUESTS = 20
 
 _buckets: dict[int, list[float]] = {}
+<<<<<<< HEAD
 _bucket_lock = threading.Lock()
+=======
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 
 
 def _settle_pause() -> None:
@@ -19,6 +25,7 @@ def _settle_pause() -> None:
 
 def record_and_check(user_id: int) -> None:
     now = time.time()
+<<<<<<< HEAD
     with _bucket_lock:
         bucket = _buckets.get(user_id, [])
         bucket = [t for t in bucket if t > now - _WINDOW_SECONDS]
@@ -27,3 +34,12 @@ def record_and_check(user_id: int) -> None:
         _buckets[user_id] = bucket
         if len(bucket) > _MAX_REQUESTS:
             raise AppError(429, "RATE_LIMITED", "Too many booking requests")
+=======
+    bucket = _buckets.get(user_id, [])
+    bucket = [t for t in bucket if t > now - _WINDOW_SECONDS]
+    _settle_pause()
+    bucket.append(now)
+    _buckets[user_id] = bucket
+    if len(bucket) > _MAX_REQUESTS:
+        raise AppError(429, "RATE_LIMITED", "Too many booking requests")
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b

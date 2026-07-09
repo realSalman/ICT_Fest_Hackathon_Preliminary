@@ -29,7 +29,14 @@ def notify_created(booking) -> None:
 
 
 def notify_cancelled(booking) -> None:
+<<<<<<< HEAD
     with _email_lock:
         _send_email("cancelled", booking)
         with _audit_lock:
             _write_audit("cancelled", booking)
+=======
+    with _audit_lock:
+        _write_audit("cancelled", booking)
+        with _email_lock:
+            _send_email("cancelled", booking)
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b

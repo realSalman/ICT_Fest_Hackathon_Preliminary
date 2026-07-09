@@ -47,7 +47,11 @@ def _now_ts() -> int:
 
 def create_access_token(user: User) -> str:
     iat = _now_ts()
+<<<<<<< HEAD
     lifetime = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+=======
+    lifetime = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES * 60)
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
     payload = {
         "sub": str(user.id),
         "org": user.org_id,
@@ -94,7 +98,11 @@ def get_token_payload(request: Request) -> dict:
     payload = decode_token(token)
     if payload.get("type") != "access":
         raise AppError(401, "UNAUTHORIZED", "Wrong token type")
+<<<<<<< HEAD
     if payload.get("jti") in _revoked_tokens:
+=======
+    if payload.get("sub") in _revoked_tokens:
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
         raise AppError(401, "UNAUTHORIZED", "Token has been revoked")
     return payload
 

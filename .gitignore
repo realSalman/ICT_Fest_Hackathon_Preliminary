@@ -4,5 +4,8 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
+<<<<<<< HEAD
 # Added by code-review-graph
 .code-review-graph/
+=======
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b

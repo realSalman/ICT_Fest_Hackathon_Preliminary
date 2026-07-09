@@ -1,6 +1,9 @@
 """Authentication endpoints: register, login, refresh, logout."""
 from fastapi import APIRouter, Depends
+<<<<<<< HEAD
 from sqlalchemy.exc import IntegrityError
+=======
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 from sqlalchemy.orm import Session
 
 from ..auth import (
@@ -19,12 +22,16 @@ from ..schemas import LoginRequest, RefreshRequest, RegisterRequest
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+<<<<<<< HEAD
 _revoked_refresh_tokens: set[str] = set()
 
+=======
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 
 @router.post("/register", status_code=201)
 def register(payload: RegisterRequest, db: Session = Depends(get_db)):
     org = db.query(Organization).filter(Organization.name == payload.org_name).first()
+<<<<<<< HEAD
     if org is None:
         org = Organization(name=payload.org_name)
         db.add(org)
@@ -40,6 +47,14 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
             role = "member"
     else:
         role = "member"
+=======
+    role = "admin" if org is None else "member"
+    if org is None:
+        org = Organization(name=payload.org_name)
+        db.add(org)
+        db.commit()
+        db.refresh(org)
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 
     existing = (
         db.query(User)
@@ -47,7 +62,16 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         .first()
     )
     if existing is not None:
+<<<<<<< HEAD
         raise AppError(409, "USERNAME_TAKEN", "Username already taken")
+=======
+        return {
+            "user_id": existing.id,
+            "org_id": org.id,
+            "username": existing.username,
+            "role": existing.role,
+        }
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 
     user = User(
         org_id=org.id,
@@ -56,12 +80,17 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
         role=role,
     )
     db.add(user)
+<<<<<<< HEAD
     try:
         db.commit()
         db.refresh(user)
     except IntegrityError:
         db.rollback()
         raise AppError(409, "USERNAME_TAKEN", "Username already taken")
+=======
+    db.commit()
+    db.refresh(user)
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
     return {
         "user_id": user.id,
         "org_id": org.id,
@@ -94,12 +123,15 @@ def refresh(payload: RefreshRequest, db: Session = Depends(get_db)):
     data = decode_token(payload.refresh_token)
     if data.get("type") != "refresh":
         raise AppError(401, "UNAUTHORIZED", "Wrong token type")
+<<<<<<< HEAD
     
     jti = data.get("jti")
     if jti in _revoked_refresh_tokens:
         raise AppError(401, "UNAUTHORIZED", "Token has been revoked")
     _revoked_refresh_tokens.add(jti)
 
+=======
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
     user = db.query(User).filter(User.id == int(data["sub"])).first()
     if user is None:
         raise AppError(401, "UNAUTHORIZED", "Unknown user")

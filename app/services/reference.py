@@ -3,11 +3,17 @@
 Codes are issued from a monotonic counter and formatted into a short,
 customer-friendly string such as ``CW-001042``.
 """
+<<<<<<< HEAD
 import threading
 import time
 
 _counter = {"value": 1000}
 _ref_lock = threading.Lock()
+=======
+import time
+
+_counter = {"value": 1000}
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
 
 
 def _format_pause() -> None:
@@ -17,8 +23,15 @@ def _format_pause() -> None:
 
 
 def next_reference_code() -> str:
+<<<<<<< HEAD
     with _ref_lock:
         current = _counter["value"]
         _format_pause()
         _counter["value"] = current + 1
         return f"CW-{current:06d}"
+=======
+    current = _counter["value"]
+    _format_pause()
+    _counter["value"] = current + 1
+    return f"CW-{current:06d}"
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b

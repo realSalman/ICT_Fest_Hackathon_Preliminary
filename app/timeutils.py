@@ -10,7 +10,11 @@ def parse_input_datetime(value: str) -> datetime:
     """
     dt = datetime.fromisoformat(value)
     if dt.tzinfo is not None:
+<<<<<<< HEAD
         dt = dt.astimezone(timezone.utc).replace(tzinfo=None)
+=======
+        dt = dt.replace(tzinfo=None)
+>>>>>>> 5bb6f5698dd73952440ca740adfde21081759f7b
     return dt
 
 
